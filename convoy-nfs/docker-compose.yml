@@ -9,20 +9,20 @@ services:
 
     volumes:
       # You must provide an exports config file
-      - nfs/exports:/etc/exports
+      - /home/lars/admin/running-docker-stack/nfs/exports:/etc/exports
 
       # Shares
-      - /data:/data
-      - /data2:/data2
+ #     - /data:/data
+ #     - /data2:/data2
 
     ports:
       - "111:111/udp"
       - "2049:2049/tcp"
       - "2049:2049/udp"
 
-    deploy:
-      placement:
-        constraints: [node.disk == data]
+#    deploy:
+#      placement:
+#        constraints: [node.disk == data]
 #networks:
 #    voteapp:
 
