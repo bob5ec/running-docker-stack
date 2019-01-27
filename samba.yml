@@ -3,6 +3,7 @@ version: "3.3"
 services:
   samba:
     image: bob5ec/samba
-    ports: 445:445
+    ports:
+     - "445:445"
     volumes: 
      - /root/.running_docker_stack/samba/secrets:/secrets
