@@ -1,12 +1,13 @@
-#!/bin/sh
-addgroup --gid 100 users
+#!/bin/bash
+#addgroup -g 100 users
 
 COUNT=`cat /secrets/users | jq '.users|length'`
-for ((i=1;i<COUNT;i++)); do
+echo adding $COUNT users
+for ((i=0;i<COUNT;i++)); do
   u=`cat /secrets/users | jq ".users[$i].name" -r`
   id=`cat /secrets/users | jq ".users[$i].id" -r`
   echo adding $u
-  adduser -s /sbin/nologin -h /home/$u --uid $id --group users -H -D $u
+  adduser -s /sbin/nologin -h /home/$u --u $id --group users -H -D $u
   mkdir -p /home/$u
   chown $u /home/$u
   chmod 700 /home/$u
