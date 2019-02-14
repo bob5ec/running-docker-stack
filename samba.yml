@@ -10,3 +10,10 @@ services:
      - /data:/data
      - /data2:/data2
      - /data/home:/home
+  backup:
+    image: bob5ec/backup
+    volumes: 
+     - /root/.running_docker_stack/samba/secrets:/secrets
+     - /data:/data
+     - /data2:/data2
+     - /data/home:/home
