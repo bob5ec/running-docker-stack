@@ -1,8 +1,9 @@
 FROM kurthuwig/duply
-RUN apk add --update \
-    bash \
-    jq \
-    && rm -rf /var/cache/apk/*
-COPY smb.conf /etc/samba/smb.conf
-COPY bin/start.sh /usr/local/bin/start.sh
-ENTRYPOINT ["/bin/bash", "/usr/local/bin/start.sh"]
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    cron \
+    && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+COPY mirror.sh /etc/cron.daily/
+COPY root/mirror.list /root/mirror.list
+COPY root/mirror.excludelist /root/mirror.excludelist
+ENTRYPOINT []
+CMD ["cron", "-f"]
