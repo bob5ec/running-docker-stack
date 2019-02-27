@@ -1,0 +1,10 @@
+version: "3.2"
+
+services:
+  backup:
+    image: bob5ec/backup
+    volumes: 
+     - ~/admin/running-docker-stack/backup/root:/root
+     - ~/admin/running-docker-stack/backup/test/data:/data
+     - ~/admin/running-docker-stack/backup/test/data2:/data2
+     - ~/admin/running-docker-stack/backup/test/data/home:/home
