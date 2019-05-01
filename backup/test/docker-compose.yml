@@ -1,0 +1,10 @@
+version: "3.2"
+
+services:
+  backup:
+    image: bob5ec/backup
+    volumes: 
+     - ./root:/root
+     - ./data:/data
+     - ./data2:/data2
+     - ./data/home:/home

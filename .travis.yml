@@ -2,8 +2,6 @@ services:
   - docker
 
 before_install:
-  - cd backup
-  - docker build -t bob5ec/backup:latest .
-  - docker run -d --name backup bob5ec/backup:latest 
-  - docker ps|grep backup
-  - docker exec backup ps aux|grep cron
+  - cd backup/test
+  - ./build.sh
+  - ./test.sh
