@@ -4,3 +4,4 @@ services:
 script:
   - ./build.sh
   - ./test.sh
+  - ./push.sh
