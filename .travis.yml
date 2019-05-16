@@ -4,4 +4,10 @@ services:
 script:
   - ./build.sh
   - ./test.sh
-  - ./push.sh
+
+deploy:
+  provider: script
+  script: bash push.sh
+  on:
+    tags: true
+    all_branches: true
