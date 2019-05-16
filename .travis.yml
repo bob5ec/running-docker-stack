@@ -1,9 +1,6 @@
 services:
   - docker
 
-before_script:
-  - cd backup/test
-
 script:
   - ./build.sh
   - ./test.sh
