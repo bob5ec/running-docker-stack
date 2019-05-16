@@ -9,5 +9,5 @@ deploy:
   provider: script
   script: bash push.sh
   on:
-    tags: true
+#    tags: true
     all_branches: true
