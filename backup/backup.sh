@@ -12,7 +12,7 @@ NEW_BACKUP=$BASISDIR/`date +%F_%H-%M`
 
 mkdir -p $NEW_BACKUP
 
-rsync -v -a --link-dest=$LAST_FULL --exclude-from '/root/backup.excludelist' `cat /root/backup.list` $NEW_BACKUP >> /var/log/backup.log
+rsync -v -a --link-dest=$LAST_FULL --exclude-from '/root/backup.excludelist' `cat /root/backup.list` $NEW_BACKUP >> /var/log/backup.log || exit 1
 
 # mark current backup as the last one
 #rm $LAST_FULL
