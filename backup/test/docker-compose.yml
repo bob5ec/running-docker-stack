@@ -17,4 +17,3 @@ services:
      - "22"
     volumes:
      - ./root/.ssh:/etc/authorized_keys
-       #     - ./test-sshd/keys:/etc/ssh/keys
