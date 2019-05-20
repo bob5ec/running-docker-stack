@@ -6,5 +6,15 @@ services:
     volumes: 
      - ./root:/root
      - ./data:/data
-     - ./data2:/data2
      - ./data/home:/home
+    links: 
+     - test-sshd
+  test-sshd:
+    image: panubo/sshd
+    environment:
+     - SSH_USERS=test:1000:1000
+    expose:
+     - "22"
+    volumes:
+     - ./root/.ssh:/etc/authorized_keys
+       #     - ./test-sshd/keys:/etc/ssh/keys
