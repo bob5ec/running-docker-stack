@@ -2,6 +2,7 @@ FROM debian:stretch
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     rsync \
     cron \
+    openssh-client \
     && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 COPY mirror.sh /etc/cron.daily/
 #COPY root/mirror.list /root/mirror.list
