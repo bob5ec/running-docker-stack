@@ -12,7 +12,7 @@ services:
   test-sshd:
     image: panubo/sshd
     environment:
-     - SSH_USERS=test:1000:1000
+     - SSH_USERS=test:${UID}:${GID}
     expose:
      - "22"
     volumes:

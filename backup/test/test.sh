@@ -1,4 +1,7 @@
 #!/bin/bash
+
+export UID=`id -u`
+export GID=`id -g`
 docker-compose -f docker-compose.yml -p backup-test up -d
 
 echo waiting for docker containers to start ...
