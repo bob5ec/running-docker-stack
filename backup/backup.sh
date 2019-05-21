@@ -1,19 +1,15 @@
 #!/bin/bash
- 
+
+SSH_HOST=test@test-sshd
+
 # all backups are stored in this directory
-BASISDIR=/data2/backup
-#. /root/target
- 
-# last backup that has been performed
-LAST_FULL=$BASISDIR/last
- 
-# location of the current to perform backup
-NEW_BACKUP=$BASISDIR/`date +%F_%H-%M`
+BASE_DIR=/home/test
 
-mkdir -p $NEW_BACKUP
+TODAY=`date +%F_%H-%M`
+ 
+ssh $SSH_HOST -C mkdir -p $BASE_DIR/$TODAY
 
-rsync -v -a --link-dest=$LAST_FULL --exclude-from '/root/backup.excludelist' `cat /root/backup.list` $NEW_BACKUP >> /var/log/backup.log || exit 1
+rsync -v -a --link-dest=$SSH_HOST:$BASE_DIR/last --exclude-from '/root/backup.excludelist' `cat /root/backup.list` $SSH_HOST:$BASE_DIR/$TODAY || exit 1
 
 # mark current backup as the last one
-#rm $LAST_FULL
-ln -s -f $NEW_BACKUP $LAST_FULL
+ssh $SSH_HOST -C ln -s -f $BASE_DIR/$TODAY $BASE_DIR/last
