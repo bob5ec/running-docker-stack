@@ -7,6 +7,12 @@ sleep 3
 echo let us see if keys are where they should be
 docker exec backuptest_backup_1 ls /root/.ssh -l || exit 1
 
+echo TEST: who am I. I should be root
+docker exec backuptest_backup_1 id || exit 1
+
+echo TEST: where is my HOME?
+docker exec backuptest_backup_1 bash -c "echo \$HOME" || exit 1
+
 echo TEST: connect to the test-sshd
 docker exec backuptest_backup_1 ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no test@test-sshd -C "echo ... connection OK" || exit 1
 
