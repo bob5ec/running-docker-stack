@@ -16,4 +16,6 @@ COPY backup.sh /etc/cron.daily/
 
 #ENTRYPOINT []
 #CMD cron && tail -f /var/log/cron.log
-CMD cron -f
+#CMD cron -f
+COPY start.sh /usr/local/bin
+CMD start.sh

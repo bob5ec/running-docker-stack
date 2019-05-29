@@ -4,7 +4,7 @@ services:
   backup:
     image: bob5ec/backup
     volumes: 
-     - ./root:/root
+     - ./root:/mnt/root
      - ./data:/data
      - ./data/home:/home
     links: 
