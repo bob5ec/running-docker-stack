@@ -20,14 +20,7 @@ echo TEST: run backup
 docker exec backuptest_backup_1 /etc/cron.daily/backup.sh || exit 1
 
 echo TEST: backup exists on storage
-#docker exec backuptest_backup_1 /bin/bash -c "[ -f /data2/backup/last/home/1 ]" || exit 1
-docker exec backuptest_test-sshd_1 /bin/bash -c "[ -f /home/test/last/home/1 ]" || exit 1
-#TODO check for all test data
-#data/home/exclude.a
-#data/home/exclude1
-#data/folder
-#data/folder/1.exclude
-#data/folder/2
+docker exec backuptest_test-sshd_1 /bin/bash -c "[ -f /home/test/last/home/1 ] && [ ! -f /home/test/last/home/exclude1 ] && [ ! -f /home/test/last/home/exclude.a ] && [ -f /home/test/last/folder/2 ] && [ ! -f /home/test/last/folder/1.exclude ]" || exit 1
 
 #DEBUG
 #docker exec -it backuptest_backup_1 /bin/bash
