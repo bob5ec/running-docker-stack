@@ -4,7 +4,7 @@ SSH_HOST=test@test-sshd
 # all backups are stored in this directory
 BASE_DIR=/home/test
 
-[ -f /root/backup.conf ] source /root/backup.conf
+[ -f /root/backup.conf ] && source /root/backup.conf
 
 TODAY=`date +%F_%H-%M`
  
