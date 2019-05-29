@@ -16,6 +16,9 @@ docker exec -it backuptest_backup_1 cat /proc/*/status |grep cron || exit 1
 echo TEST: connect to the test-sshd
 docker exec backuptest_backup_1 ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no test@test-sshd -C "echo ... connection OK" || exit 1
 
+# TEST case with existing last link
+#docker exec backuptest_test-sshd_1 /bin/bash -c "ln -s /tmp /home/test/last" || exit 1
+
 echo TEST: run backup
 docker exec backuptest_backup_1 /etc/cron.daily/backup.sh || exit 1
 
