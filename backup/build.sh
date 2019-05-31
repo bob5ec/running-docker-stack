@@ -1,3 +1,2 @@
 #!/bin/bash
 docker build -t bob5ec/backup:latest .
-docker push bob5ec/backup:latest
