@@ -24,7 +24,16 @@ echo TEST: run backup
 docker exec backuptest_backup_1 /etc/cron.daily/backup.sh || exit 1
 
 echo TEST: backup exists on storage
-docker exec backuptest_test-sshd_1 /bin/bash -c "[ -f /home/test/last/home/1 ] && [ ! -f /home/test/last/home/exclude1 ] && [ ! -f /home/test/last/home/exclude.a ] && [ -f /home/test/last/folder/2 ] && [ ! -f /home/test/last/folder/1.exclude ]" || exit 1
+BASE_DIR=/home/test/backup
+docker exec backuptest_test-sshd_1 /bin/bash -c "[ -f $BASE_DIR/last/home/1 ] && [ ! -f $BASE_DIR/last/home/exclude1 ] && [ ! -f $BASE_DIR/last/home/exclude.a ] && [ -f $BASE_DIR/last/folder/2 ] && [ ! -f $BASE_DIR/last/folder/1.exclude ]" || exit 1
+
+# do we really need an extra mirror??? -> remove it if not needed
+#echo TEST: run mirror
+#docker exec backuptest_backup_1 /etc/cron.daily/mirror.sh || exit 1
+#
+#echo TEST: mirror exists on storage
+#BASE_DIR=/home/test/backup
+#docker exec backuptest_test-sshd_1 /bin/bash -c "[ -f $BASE_DIR/last/home/1 ] && [ ! -f $BASE_DIR/last/home/exclude1 ] && [ ! -f $BASE_DIR/last/home/exclude.a ] && [ -f $BASE_DIR/last/folder/2 ] && [ ! -f $BASE_DIR/last/folder/1.exclude ]" || exit 1
 
 #DEBUG
 #docker exec -it backuptest_backup_1 /bin/bash

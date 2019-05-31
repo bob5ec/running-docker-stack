@@ -1,3 +1,3 @@
-/data/home/exclude.*
-/data/home/exclude1
+/home/exclude.*
+/home/exclude1
 *.exclude
