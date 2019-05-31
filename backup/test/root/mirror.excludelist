@@ -1,0 +1,3 @@
+/home/exclude.*
+/home/exclude1
+*.exclude

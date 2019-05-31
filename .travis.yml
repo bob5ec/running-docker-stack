@@ -1,0 +1,13 @@
+services:
+  - docker
+
+script:
+  - ./build.sh
+  - ./test.sh
+
+deploy:
+  provider: script
+  script: bash push.sh
+  on:
+#    tags: true
+    all_branches: true
