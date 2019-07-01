@@ -1,0 +1,8 @@
+#!/bin/bash
+docker run -dt \
+  -p 445:445 \
+  --name samba \
+  --restart=always \
+  bob5ec/samba
+ # -v $PWD/dozer:/dozer \
+ # -v $PWD/share:/share \
