@@ -16,7 +16,7 @@ rsync -v -a --link-dest=../last --exclude-from '/root/backup.excludelist' `cat /
 TMPDIR=`mktemp -d`
 
 # rm $BASE_DIR/last
-rsync -v -a --remove-source-files $SSH_HOST:$BASE_DIR/last $TMPDIR/old || exit 1
+rsync -v -a --remove-source-files $SSH_HOST:$BASE_DIR/last $TMPDIR/old
 
 ln -s $BASE_DIR/$TODAY $TMPDIR/last
 rsync -v -a  $TMPDIR/last $SSH_HOST:$BASE_DIR/last || exit 1
