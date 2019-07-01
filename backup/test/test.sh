@@ -20,6 +20,10 @@ docker exec backuptest_backup_1 ssh -o UserKnownHostsFile=/dev/null -o StrictHos
 # TEST case with existing last link
 #docker exec backuptest_test-sshd_1 /bin/bash -c "ln -s /tmp /home/test/last" || exit 1
 
+# create target folder
+BASE_DIR=/home/test/backup
+docker exec backuptest_test-sshd_1 /bin/bash -c "mkdir -p $BASE_DIR; chown test $BASE_DIR"
+
 echo TEST: run backup
 docker exec backuptest_backup_1 /etc/cron.daily/backup.sh || exit 1
 
