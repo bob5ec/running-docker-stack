@@ -9,6 +9,7 @@ services:
      - ./data/home:/home
     links: 
      - test-sshd
+    restart: unless-stopped
   test-sshd:
     image: panubo/sshd
     environment:
