@@ -10,6 +10,7 @@ services:
      - /data:/data
      - /data2:/data2
      - /data/home:/home
+       restart: unless-stopped
   backup:
     image: bob5ec/backup
     volumes: 
@@ -17,3 +18,4 @@ services:
      - /data:/data
      - /data2:/data2
      - /data/home:/home
+       restart: unless-stopped
