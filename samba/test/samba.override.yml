@@ -7,3 +7,7 @@ services:
      - ./data:/data
      - ./data2:/data2
      - ./data/home:/home
+  samba-client:
+    image: bob5ec/samba-client
+    links:
+     - samba

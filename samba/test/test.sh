@@ -1,4 +1,8 @@
 #!/bin/bash
+function cleanup {
+	docker-compose -f ../../samba.yml -f samba.override.yml -p samba-test down
+	exit $1
+}
 
 export UID=$UID
 export GID=`id -g`
@@ -9,7 +13,7 @@ echo waiting for docker containers to start ...
 sleep 3
 
 echo TEST: container comes up
-docker ps|grep samba || exit 1
+docker ps|grep samba-test_samba_1 || exit 1
 
 # TODO add cron when migration to feature branches and deploy gatekeeper is done
 #echo TEST: cron is running... there is no ps available
@@ -45,4 +49,4 @@ docker ps|grep samba || exit 1
 #docker exec -it backuptest_test-sshd_1 /bin/bash
 
 
-docker-compose -f ../../samba.yml -f samba.override.yml -p samba-test down
+cleanup 0
