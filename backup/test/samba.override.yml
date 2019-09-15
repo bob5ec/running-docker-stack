@@ -1,0 +1,19 @@
+version: "3.3"
+
+services:
+  backup:
+    volumes: 
+     - ./backup/test/root:/mnt/root
+     - ./backup/test/data:/data
+     - ./backup/test/data/home:/home
+     - ./backup/test/data:/data2
+    links: 
+     - test-sshd
+  test-sshd:
+    image: panubo/sshd
+    environment:
+     - SSH_USERS=test:${UID}:${GID}
+    expose:
+     - "22"
+    volumes:
+     - ./backup/test/root/.ssh:/etc/authorized_keys
