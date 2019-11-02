@@ -2,6 +2,7 @@ version: "3.3"
 
 services:
   backup:
+    container_name: backup
     volumes: 
      - ./backup/test/root:/mnt/root
      - ./backup/test/data:/data
@@ -10,6 +11,7 @@ services:
     links: 
      - test-sshd
   test-sshd:
+    container_name: test-sshd
     image: panubo/sshd
     environment:
      - SSH_USERS=test:${UID}:${GID}
