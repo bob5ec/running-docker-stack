@@ -1,6 +1,6 @@
 #!/bin/bash
 function cleanup {
-	docker exec -it samba-test_samba_1 chown -R $UID.$GID /data*
+	docker exec -it samba chown -R $UID.$GID /data*
 	docker-compose -f ../../samba.yml -f samba.override.yml -p samba-test down
 	exit $1
 }
