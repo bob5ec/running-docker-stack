@@ -13,6 +13,9 @@ docker-compose -f ../../samba.yml -f samba.override.yml -p samba-test up -d
 echo waiting for docker containers to start ...
 sleep 3
 
+echo LIST docker ps
+docker ps
+
 echo TEST: container comes up
 docker exec -it samba-test_samba_1 /bin/true || cleanup 1
 

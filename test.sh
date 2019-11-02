@@ -1,5 +1,6 @@
 #!/bin/bash
-cd samba/test
+BUILD_ROOT=`pwd`
+cd $BUILD_ROOT/samba/test
 . test.sh
-cd backup/test
+cd $BUILD_ROOT/backup/test
 . test.sh
