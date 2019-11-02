@@ -1,5 +1,6 @@
 #!/bin/bash
 function cleanup {
+	docker exec -it samba-test_samba_1 chown -R $UID.$GID /data*
 	docker-compose -f ../../samba.yml -f samba.override.yml -p samba-test down
 	exit $1
 }
@@ -13,11 +14,10 @@ echo waiting for docker containers to start ...
 sleep 3
 
 echo TEST: container comes up
-docker ps|grep samba-test_samba_1 || exit 1
+docker exec -it samba-test_samba_1 /bin/true || cleanup 1
 
-# TODO add cron when migration to feature branches and deploy gatekeeper is done
-#echo TEST: cron is running... there is no ps available
-#docker exec -it backuptest_backup_1 cat /proc/*/status |grep cron || exit 1
+echo TEST: test container comes up
+docker exec -it samba-test_samba-client_1 /bin/true || cleanup 1
 
 #echo TEST: connect to the test-sshd
 #docker exec backuptest_backup_1 ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no test@test-sshd -C "echo ... connection OK" || exit 1

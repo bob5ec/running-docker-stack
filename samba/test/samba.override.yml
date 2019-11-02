@@ -3,10 +3,10 @@ version: "3.3"
 services:
   samba:
     volumes: 
-     - ./secrets:/secrets
-     - ./data:/data
-     - ./data2:/data2
-     - ./data/home:/home
+     - ./samba/test/secrets:/secrets
+     - ./samba/test/data:/data
+     - ./samba/test/data2:/data2
+     - ./samba/test/data/home:/home
   samba-client:
     image: bob5ec/samba-client
     links:
