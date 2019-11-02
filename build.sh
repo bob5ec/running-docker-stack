@@ -1,8 +1,7 @@
 #!/bin/bash
-cd samba
+BUILD_ROOT=`pwd`
+cd $BUILD_ROOT/samba
 . build.sh
-cd ..
 
-cd backup
+cd $BUILDROOT/backup
 . build.sh
-cd ..
