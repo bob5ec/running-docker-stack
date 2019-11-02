@@ -17,10 +17,10 @@ echo LIST docker ps
 docker ps
 
 echo TEST: container comes up
-docker exec -it samba-test_samba_1 /bin/true || cleanup 1
+docker exec -it samba /bin/true || cleanup 1
 
 echo TEST: test container comes up
-docker exec -it samba-test_samba-client_1 /bin/true || cleanup 1
+docker exec -it samba-client /bin/true || cleanup 1
 
 #echo TEST: connect to the test-sshd
 #docker exec backuptest_backup_1 ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no test@test-sshd -C "echo ... connection OK" || exit 1
