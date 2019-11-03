@@ -1,5 +1,6 @@
 #!/bin/bash
 function cleanup {
+	[[ "$1" == 1 ]] && echo error
 	docker exec -it samba chown -R $UID.$GID /data*
 	docker-compose -f ../../samba.yml -f samba.override.yml -p samba-test down
 	exit $1
@@ -13,14 +14,22 @@ docker-compose -f ../../samba.yml -f samba.override.yml -p samba-test up -d
 echo waiting for docker containers to start ...
 sleep 3
 
-echo LIST docker ps
-docker ps
-
 echo TEST: container comes up
 docker exec -it samba /bin/true || cleanup 1
 
 echo TEST: test container comes up
 docker exec -it samba-client /bin/true || cleanup 1
+
+#docker exec -it samba-client /bin/sh || cleanup 1
+
+echo TEST: data and user share
+SHARES=`docker exec -it samba-client /bin/sh -c "echo test | smbclient -U foo -L samba -e"`
+echo $SHARES
+[[ $SHARES =~ "data" && $SHARES =~ "foo" ]] || cleanup 1
+
+# data share is public :-(
+#echo TEST: do NOT expose data share without authentication
+#docker exec -it samba-client /bin/sh -c "echo '' | smbclient -L samba | grep data" && cleanup 1
 
 #echo TEST: connect to the test-sshd
 #docker exec backuptest_backup_1 ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no test@test-sshd -C "echo ... connection OK" || exit 1
