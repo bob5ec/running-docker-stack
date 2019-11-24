@@ -10,6 +10,6 @@ services:
      - ./samba/test/data/home:/home
   samba-client:
     container_name: samba-client
-    image: bob5ec/samba-client
+    image: "bob5ec/samba-client:${ENV}"
     links:
      - samba

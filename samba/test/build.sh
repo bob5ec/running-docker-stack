@@ -1,2 +1,5 @@
 #!/bin/bash
-docker build -t bob5ec/samba-client:latest .
+#set default env to dev
+export env=${env:-dev}
+
+docker build -t bob5ec/samba-client:$env .

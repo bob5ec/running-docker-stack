@@ -5,6 +5,9 @@ function cleanup {
 	exit $1
 }
 
+#set default env to dev
+export env=${env:-dev}
+
 export UID=$UID
 export GID=`id -g`
 docker-compose -f ../../samba.yml -f samba.override.yml -p backuptest up -d

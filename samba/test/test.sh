@@ -6,9 +6,13 @@ function cleanup {
 	exit $1
 }
 
+#set default env to dev
+export ENV=${ENV:-dev}
+
 export UID=$UID
 export GID=`id -g`
 #use original compose and add client
+echo "env:$ENV"
 docker-compose -f ../../samba.yml -f samba.override.yml -p samba-test up -d
 
 echo waiting for docker containers to start ...
