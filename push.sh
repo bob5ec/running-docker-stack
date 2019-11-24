@@ -1,8 +1,9 @@
 #!/bin/bash
 #set default env to dev
 export env=${env:-dev}
+BUILD_ROOT=`pwd`
 
-cd samba
+cd $BUILD_ROOT/samba
 . push.sh
-cd backup
+cd $BUILD_ROOT/backup
 . push.sh
