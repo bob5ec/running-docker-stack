@@ -1,3 +1,10 @@
 #!/bin/bash
-cd backup
+#set default env to dev
+export env=${env:-dev}
+BUILD_ROOT=`pwd`
+
+cd $BUILD_ROOT/samba
+. build.sh
+
+cd $BUILD_ROOT/backup
 . build.sh
