@@ -3,6 +3,7 @@
 set -e
 
 #set default env to dev
+export env=$TRAVIS_BRANCH
 export ENV=${env:-dev}
 BUILD_ROOT=`pwd`
 
