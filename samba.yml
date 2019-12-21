@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
   samba:
-    image: bob5ec/samba
+    image: "bob5ec/samba:${ENV}"
     ports:
      - "445:445"
     volumes: 
@@ -12,7 +12,7 @@ services:
      - /data/home:/home
     restart: unless-stopped
   backup:
-    image: bob5ec/backup
+    image: "bob5ec/backup:${ENV}"
     volumes: 
      - /root/.running_docker_stack/backup/root:/mnt/root
      - /data:/data

@@ -12,4 +12,4 @@ for ((i=0;i<COUNT;i++)); do
   (cat /secrets/users | jq ".users[$i].password" -r; cat /secrets/users | jq ".users[$i].password" -r) | smbpasswd -s -a $u
 done
 
-smbd --foreground --log-stdout
+smbd --foreground --log-stdout -d 3 < /dev/null
