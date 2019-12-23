@@ -6,11 +6,15 @@ function cleanup {
 }
 
 #set default env to dev
-export env=${env:-dev}
+export ENV=${ENV:-dev}
 
 export UID=$UID
 export GID=`id -g`
 docker-compose -f ../../samba.yml -f samba.override.yml -p backuptest up -d
+
+#DEBUG
+#docker exec -it backup /bin/bash
+#cleanup 0
 
 echo waiting for docker containers to start ...
 sleep 3
@@ -48,7 +52,5 @@ docker exec test-sshd /bin/bash -c "[ -f $BASE_DIR/last/home/1 ] && [ ! -f $BASE
 #docker exec backuptest_test-sshd_1 /bin/bash -c "[ -f $BASE_DIR/last/home/1 ] && [ ! -f $BASE_DIR/last/home/exclude1 ] && [ ! -f $BASE_DIR/last/home/exclude.a ] && [ -f $BASE_DIR/last/folder/2 ] && [ ! -f $BASE_DIR/last/folder/1.exclude ]" || cleanup 1
 
 #DEBUG
-#docker exec -it backuptest_backup_1 /bin/bash
-#docker exec -it backuptest_test-sshd_1 /bin/bash
 
 cleanup 0
