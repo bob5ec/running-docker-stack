@@ -22,9 +22,8 @@ sleep 3
 echo TEST: container comes up
 docker exec -it backup /bin/true || cleanup 1
 
-# TODO add cron when migration to feature branches and deploy gatekeeper is done
-#echo TEST: cron is running... there is no ps available
-#docker exec -it backuptest_backup_1 cat /proc/*/status |grep cron || cleanup 1
+echo TEST: cron is running... there is no ps available
+docker exec -it backup cat /proc/*/status |grep cron || cleanup 1
 
 echo TEST: connect to the test-sshd
 docker exec backup ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no test@test-sshd -C "echo ... connection OK" || cleanup 1
