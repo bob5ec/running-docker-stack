@@ -4,9 +4,6 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     cron \
     openssh-client \
     && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-COPY mirror.sh /etc/cron.daily/
-#COPY root/mirror.list /root/mirror.list
-#COPY root/mirror.excludelist /root/mirror.excludelist
 COPY backup.sh /etc/cron.daily/
 #COPY root/backup.list /root/backup.list
 #COPY root/backup.excludelist /root/backup.excludelist
