@@ -23,6 +23,13 @@ services:
       - 8080:80
     links:
       - db
+    environment:
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_HOST=db
+      - NEXTCLOUD_ADMIN_USER=admin
+      - NEXTCLOUD_ADMIN_PASSWORD=${NEXTCLOUD_ADMIN_PASSWORD}
     volumes:
       - nextcloud:/var/www/html
       - /root/.running_docker_stack/nextcloud/secrets:/secrets
