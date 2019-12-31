@@ -31,7 +31,7 @@ services:
       - MYSQL_HOST=db
       - NEXTCLOUD_ADMIN_USER=admin
       - NEXTCLOUD_ADMIN_PASSWORD=${NEXTCLOUD_ADMIN_PASSWORD}
-      - NEXTCLOUD_TRUSTED_DOMAINS=coruscant
+      - NEXTCLOUD_TRUSTED_DOMAINS="coruscant.home.asd.bz coruscant localhost"
     volumes:
       - nextcloud:/var/www/html
       - /root/.running_docker_stack/nextcloud/secrets:/secrets
