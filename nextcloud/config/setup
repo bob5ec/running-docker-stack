@@ -1,10 +1,16 @@
 #!/bin/bash
-#function occ {
-#	su www-data -s /bin/bash -c "php /var/www/html/occ $@"
-#}
-#occ app:enable files_external
-#occ files_external:create /data local null::null
-#occ files_external:config <ID 1> "datadir" "/data"
-#occ files_external:applicable --add-user lars <ID 1>
+function occ {
+	cmd="php /var/www/html/occ $@"
+	echo "$cmd"
+	su www-data -s /bin/bash -c "$cmd"
+}
 
-/entrypoint.sh apache2-foreground
+
+/config/wait-for-it/wait-for-it.sh db:3306
+
+occ app:enable files_external
+id=$(occ files_external:create /data local null::null --output json)
+echo $id
+#TODO get id
+occ files_external:config $id "datadir" "/data"
+occ files_external:applicable --add-user lars $id
