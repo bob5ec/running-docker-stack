@@ -1,0 +1,10 @@
+#!/bin/bash
+#function occ {
+#	su www-data -s /bin/bash -c "php /var/www/html/occ $@"
+#}
+#occ app:enable files_external
+#occ files_external:create /data local null::null
+#occ files_external:config <ID 1> "datadir" "/data"
+#occ files_external:applicable --add-user lars <ID 1>
+
+/entrypoint.sh apache2-foreground
