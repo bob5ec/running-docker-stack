@@ -1,16 +1,66 @@
 #!/bin/bash
 function occ {
 	cmd="php /var/www/html/occ $@"
-	echo "$cmd"
 	su www-data -s /bin/bash -c "$cmd"
 }
 
+apt-get update
+apt-get install -y jq
+/config/wait-for-it/wait-for-it.sh -t 0 db:3306
 
-/config/wait-for-it/wait-for-it.sh db:3306
+#setup nextcloud
+source /secrets/compose
+occ maintenance:install --database="mysql" --database-name="nextcloud" --database-host="db" --database-user="nextcloud" --database-pass="${MYSQL_PASSWORD}" --database-table-prefix="" --admin-user="admin" --admin-pass="${NEXTCLOUD_ADMIN_PASSWORD}"
+
+occ config:system:set trusted_domains 1 --value="coruscant"
+occ config:system:set trusted_domains 2 --value="niobe"
+
+#occ config:system:set overwrite.cli.url --value="https://nextcloud.my.domain"
+occ config:system:set memcache.local --value="\OC\Memcache\APCu" --type=string
+#occ config:system:set defaultapp --value="calendar" --type=string
+occ config:system:set trashbin_retention_obligation --value="auto, 7" --type=string
+#occ config:system:set log_rotate_size --value="10485760" --type=integer
+occ config:system:set logtimezone --value="Europe/Berlin" --type=string
+#occ config:system:set remember_login_cookie_lifetime --value="86400" --type=integer
+
+#TODO setup mail
+#occ config:system:set mail_from_address --value="php-nextcloud" --type=string
+#occ config:system:set mail_domain --value="nextcloud.my.domain" --type=string
+#occ config:system:set mail_send_plaintext_only --value="true" --type=boolean
+
+#TODO check if this is needed (cron is not running in the docker image) 
+#echo "*/15 * * * * www-data php -f /srv/www/nextcloud/cron.php" > /etc/cron.d/9999nextcloud
+#occ config:app:set core backgroundjobs_mode --value="cron"
+
+#occ config:app:set core shareapi_enforce_links_password --value="yes"
+#occ config:app:set sharebymail enforcePasswordProtection --value="yes"
+occ config:app:set core shareapi_default_expire_date --value="yes"
+occ config:app:set core shareapi_expire_after_n_days --value="14"
+occ config:app:set core shareapi_allow_public_upload --value="no"
+occ config:app:set files_sharing incoming_server2server_share_enabled --value="no"
+occ config:app:set files_sharing outgoing_server2server_share_enabled --value="no"
+occ config:app:set files_sharing lookupServerUploadEnabled --value="no"
+occ config:app:set core umgmt_send_email --value="true"
+
+# adding users if they do not exist
+COUNT=`cat /secrets/users | jq '.users|length'`
+for ((i=0;i<COUNT;i++)); do
+  user=`cat /secrets/users | jq ".users[$i].name" -r`
+  export OC_PASS=`cat /secrets/users | jq ".users[$i].password" -r`
+  occ user:add --password-from-env --display-name="$user" --group="users" $user
+done
 
 occ app:enable files_external
-id=$(occ files_external:create /data local null::null --output json)
-echo $id
-#TODO get id
+
+#reset config one by one
+#TODO: more general reset would be nice (and dangerous, if it resets user config/data)
+for id in $(occ files_external:list --output json | jq .[].mount_id)
+do
+	occ files_external:delete -y $id
+done
+
+# "json" means just get me the id...
+id=`occ files_external:create /data local null::null --output json`
+echo "created $id"
 occ files_external:config $id "datadir" "/data"
 occ files_external:applicable --add-user lars $id

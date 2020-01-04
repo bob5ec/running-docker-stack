@@ -46,6 +46,7 @@ services:
     volumes:
       - nextcloud:/var/www/html
       - ./nextcloud/config:/config
+      - ./nextcloud/secrets:/secrets
     depends_on:
       - db
     entrypoint: ["/bin/bash"]
