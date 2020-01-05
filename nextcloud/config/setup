@@ -9,12 +9,12 @@ apt-get install -y jq
 chown www-data /var/www/html/data
 /config/wait-for-it/wait-for-it.sh -t 0 db:3306
 
-#setup nextcloud
-#TODO case: reset nextcloud storage. -> nextcloud configuration is purged.
-#     error: The username is already being used
-#     TODO: remove admin user from db?
+now=`date +%s`
 source /secrets/compose
-occ maintenance:install --database="mysql" --database-name="nextcloud" --database-host="db" --database-user="nextcloud" --database-pass="${MYSQL_PASSWORD}" --database-table-prefix="" --admin-user="admin" --admin-pass="${NEXTCLOUD_ADMIN_PASSWORD}"
+occ maintenance:install --database="mysql" --database-name="nextcloud" --database-host="db" --database-user="nextcloud" --database-pass="${MYSQL_PASSWORD}" --database-table-prefix="" --admin-user="admin$now" --admin-pass="${NEXTCLOUD_ADMIN_PASSWORD}"
+export OC_PASS="${NEXTCLOUD_ADMIN_PASSWORD}"
+occ user:add --password-from-env --display-name="admin" --group="admin" admin
+occ user:delete "admin$now"
 
 occ config:system:set trusted_domains 1 --value="coruscant"
 occ config:system:set trusted_domains 2 --value="niobe"
@@ -63,8 +63,8 @@ do
 	occ files_external:delete -y $id
 done
 
-# "json" means just get me the id...
+# --output "json" means just get me the id...
 id=`occ files_external:create /data local null::null --output json`
 echo "created $id"
 occ files_external:config $id "datadir" "/data"
-occ files_external:applicable --add-user lars $id
+occ files_external:applicable --add-group users $id
