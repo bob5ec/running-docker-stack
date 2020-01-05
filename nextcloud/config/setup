@@ -6,9 +6,13 @@ function occ {
 
 apt-get update
 apt-get install -y jq
+chown www-data /var/www/html/data
 /config/wait-for-it/wait-for-it.sh -t 0 db:3306
 
 #setup nextcloud
+#TODO case: reset nextcloud storage. -> nextcloud configuration is purged.
+#     error: The username is already being used
+#     TODO: remove admin user from db?
 source /secrets/compose
 occ maintenance:install --database="mysql" --database-name="nextcloud" --database-host="db" --database-user="nextcloud" --database-pass="${MYSQL_PASSWORD}" --database-table-prefix="" --admin-user="admin" --admin-pass="${NEXTCLOUD_ADMIN_PASSWORD}"
 

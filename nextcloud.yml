@@ -3,6 +3,7 @@ version: '3'
 volumes:
   nextcloud:
   nextcloudDb:
+    external: true
 
 services:
 
@@ -17,7 +18,14 @@ services:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
-
+##    depends_on:
+#      - db-setup
+#  db-setup:
+#    image: alpine:latest
+#    command: >
+#      ash -c "apk add docker &&
+#              docker volume create nextcloudDb"
+    
   app:
     image: nextcloud
     ports:
@@ -34,8 +42,8 @@ services:
       - NEXTCLOUD_TRUSTED_DOMAINS=coruscant.home.asd.bz coruscant localhost
     volumes:
       - nextcloud:/var/www/html
-      - ./nextcloud/secrets:/secrets
       - /data:/data
+      - /data/nextcloud:/var/www/html/data
     restart: always
     depends_on:
       - db
@@ -44,9 +52,11 @@ services:
     build: .
     image: nextcloud
     volumes:
-      - nextcloud:/var/www/html
       - ./nextcloud/config:/config
       - ./nextcloud/secrets:/secrets
+      - nextcloud:/var/www/html
+      - /data:/data
+      - /data/nextcloud:/var/www/html/data
     depends_on:
       - db
     entrypoint: ["/bin/bash"]
