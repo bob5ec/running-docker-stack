@@ -1,0 +1,29 @@
+version: '3'
+
+volumes:
+  nextcloud:
+  nextcloudDb:
+
+services:
+
+  db:
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    
+  app:
+    environment:
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - NEXTCLOUD_ADMIN_PASSWORD=${NEXTCLOUD_ADMIN_PASSWORD}
+      - NEXTCLOUD_TRUSTED_DOMAINS=coruscant.home.asd.bz coruscant localhost
+    volumes:
+      - nextcloud:/var/www/html
+      - ./data:/data
+      - ./data/nextcloud:/var/www/html/data
+  config:
+    volumes:
+      - ./nextcloud/config:/config
+      - ./nextcloud/secrets:/secrets
+      - nextcloud:/var/www/html
+      - ./data:/data
+      - ./data/nextcloud:/var/www/html/data

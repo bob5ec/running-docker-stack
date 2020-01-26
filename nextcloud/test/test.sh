@@ -1,5 +1,8 @@
 #!/bin/bash
-#TODO get docker-deploy via ???/git
+#get docker-deploy via git prod branch
+curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- -l ../../nextcloud.yml
+#TODO feed docker-deploy with an overwrite.yml
+#TODO place test secrets in the right directory
 #TODO use docker-deploy to deploy nextcloud
 #TODO create emtpy test database (or overwrite the external flag in compose file)
 #TODO run is alive test
