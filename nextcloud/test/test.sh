@@ -8,47 +8,49 @@ curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/d
 #TODO run is alive test
 #TODO rerun docker-deploy
 #TODO rerun tests
+
 function cleanup {
 	[[ "$1" == 1 ]] && echo error
-	docker exec -it samba chown -R $UID.$GID /data*
-	docker-compose -f ../../samba.yml -f samba.override.yml -p samba-test down
+	docker exec -it app chown -R $UID.$GID /data*
+	curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- down -l ../../nextcloud.yml
 	exit $1
 }
-
 #set default env to dev
 export ENV=${ENV:-dev}
-
 export UID=$UID
 export GID=`id -g`
-#use original compose and add client
-echo "env:$ENV"
-docker-compose -f ../../samba.yml -f samba.override.yml -p samba-test up -d
 
-echo waiting for docker containers to start ...
-sleep 3
+echo waiting for app to start ...
+curl https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh | /bin/bash -s -- localhost:8080 -t 0
 
-echo TEST: container comes up
-docker exec -it samba /bin/true || cleanup 1
+echo waiting for db to start ...
+docker exec -it app /bin/bash -c "curl https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh | /bin/bash -s -- db:3306 -t 0"
 
-echo TEST: test container comes up
-docker exec -it samba-client /bin/true || cleanup 1
+echo wait for config run to compleate. Here is the container\'s log:
+docker logs config
+docker ps | grep config
+error_code=$?
+while [ "$error_code" == "0" ]
+do
+	sleep 1
+	docker logs config --since 1s
+	docker ps | grep config
+	error_code=$?
+done
+
+#DEBUG
+docker exec -it app /bin/bash
+
+# TODO echo TEST: read and write files
+# TODO test for unauthenticated access
+
+#cleanup 0
+####################################
 
 #docker exec -it samba-client /bin/sh || cleanup 1
 
-echo TEST: data and user share
-SHARES=`docker exec -it samba-client /bin/sh -c "echo test | smbclient -U foo -L samba -e"`
-echo $SHARES
-[[ $SHARES =~ "data" && $SHARES =~ "foo" ]] || cleanup 1
+#echo TEST: data and user share
+#SHARES=`docker exec -it samba-client /bin/sh -c "echo test | smbclient -U foo -L samba -e"`
+#echo $SHARES
+#[[ $SHARES =~ "data" && $SHARES =~ "foo" ]] || cleanup 1
 
-# TODO data share is public :-(
-#echo TEST: do NOT expose data share without authentication
-#docker exec -it samba-client /bin/sh -c "echo '' | smbclient -L samba | grep data" && cleanup 1
-
-# TODO echo TEST: read and write files
-
-#DEBUG
-#docker exec -it backuptest_backup_1 /bin/bash
-#docker exec -it backuptest_test-sshd_1 /bin/bash
-
-
-cleanup 0

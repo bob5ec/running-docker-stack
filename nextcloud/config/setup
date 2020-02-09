@@ -5,9 +5,10 @@ function occ {
 }
 
 apt-get update
-apt-get install -y jq
+apt-get install -y jq wait-for-it
 chown www-data /var/www/html/data
-/config/wait-for-it/wait-for-it.sh -t 0 db:3306
+wait-for-it -t 0 db:3306
+sleep 2
 
 now=`date +%s`
 source /secrets/compose
