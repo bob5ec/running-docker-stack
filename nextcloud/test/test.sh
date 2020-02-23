@@ -11,7 +11,8 @@ curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/d
 
 function cleanup {
 	[[ "$1" == 1 ]] && echo error
-	docker exec -it app chown -R $UID.$GID /data*
+	#docker exec -it app chown -R $UID.$GID /data*
+	docker exec -it app rm -r /data*
 	curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- down -l ../../nextcloud.yml
 	exit $1
 }
@@ -38,13 +39,20 @@ do
 	error_code=$?
 done
 
-#DEBUG
-docker exec -it app /bin/bash
+echo TEST: config run without error
+docker logs config | grep failed
+if [ "$?" == "0" ]; then
+	cleanup 1
+fi
 
-# TODO echo TEST: read and write files
+#DEBUG
+#docker exec -it client /bin/sh
+
+#TODO echo TEST: read and write files
+#TODO add nextcloud-client to compose, then call it
 # TODO test for unauthenticated access
 
-#cleanup 0
+cleanup 0
 ####################################
 
 #docker exec -it samba-client /bin/sh || cleanup 1

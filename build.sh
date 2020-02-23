@@ -9,3 +9,6 @@ cd $BUILD_ROOT/samba
 
 cd $BUILD_ROOT/backup
 . build.sh
+
+cd $BUILD_ROOT/nextcloud
+. build.sh
