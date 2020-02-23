@@ -52,7 +52,7 @@ fi
 #TODO add nextcloud-client to compose, then call it
 # TODO test for unauthenticated access
 
-cleanup 0
+#cleanup 0
 ####################################
 
 #docker exec -it samba-client /bin/sh || cleanup 1

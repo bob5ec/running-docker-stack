@@ -1,7 +1,6 @@
 #!/bin/bash
-#set default env to dev
-export env=$TRAVIS_BRANCH
-export env=${env:-dev}
+
+source build-system.sh
 BUILD_ROOT=`pwd`
 
 cd $BUILD_ROOT/samba

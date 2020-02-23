@@ -1,6 +1,6 @@
 #!/bin/bash
-#set default env to dev
-export env=${env:-dev}
+source ../build-system.sh
+
 docker build -t bob5ec/samba:$env .
 
 # build test container
