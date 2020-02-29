@@ -1,7 +1,7 @@
 #!/bin/bash
 
-echo docker images:
-docker images
+source ../../build-system.sh
+echo test nextcloud:$ENV
 
 # test local docker-deploy
 #cat ../../../docker-infrastructure/roles/docker/files/docker-deploy | /bin/bash -s -- -l ../../nextcloud.yml
@@ -25,9 +25,9 @@ function cleanup {
 	curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- down -l ../../nextcloud.yml
 	exit $1
 }
-#set default env to dev
-export ENV=${ENV:-dev}
+set +e
 export UID=$UID
+set -e
 export GID=`id -g`
 
 echo waiting for app to start ...
