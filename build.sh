@@ -11,3 +11,6 @@ cd $BUILD_ROOT/backup
 
 cd $BUILD_ROOT/nextcloud/test
 . build.sh
+
+echo docker images:
+docker images

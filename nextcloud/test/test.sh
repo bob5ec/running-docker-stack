@@ -1,6 +1,13 @@
 #!/bin/bash
+
+echo docker images:
+docker images
+
+# test local docker-deploy
+#cat ../../../docker-infrastructure/roles/docker/files/docker-deploy | /bin/bash -s -- -l ../../nextcloud.yml
 #get docker-deploy via git prod branch
 curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- -l ../../nextcloud.yml
+
 #TODO feed docker-deploy with an overwrite.yml
 #TODO place test secrets in the right directory
 #TODO use docker-deploy to deploy nextcloud
@@ -13,6 +20,8 @@ function cleanup {
 	[[ "$1" == 1 ]] && echo error
 	#docker exec -it app chown -R $UID.$GID /data*
 	docker exec -it app rm -r /data*
+	# test local docker-deploy
+	#cat ../../../docker-infrastructure/roles/docker/files/docker-deploy | /bin/bash -s -- -l ../../nextcloud.yml | /bin/bash -s -- down -l ../../nextcloud.yml
 	curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- down -l ../../nextcloud.yml
 	exit $1
 }
