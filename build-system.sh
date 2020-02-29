@@ -18,11 +18,10 @@ trap 'exit_on_error $? $last_command' EXIT
 
 ###############################################################################
 if [ ! -z "$TRAVIS_BRANCH" ]; then
-	export env=$TRAVIS_BRANCH
+	export ENV=$TRAVIS_BRANCH
 fi
 
-#set default env to dev
-#export env=${env:-dev}
-if [ -z "$env" ]; then
-	export env=`git rev-parse --abbrev-ref HEAD`
+#set default ENV to dev
+if [ -z "$ENV" ]; then
+	export ENV=`git rev-parse --abbrev-ref HEAD`
 fi

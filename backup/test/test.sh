@@ -3,7 +3,7 @@
 source ../../build-system.sh
 
 function cleanup {
-	if [ $1 ]; then
+	if [ "$1" == 1 ]; then
 		echo error
 	else
 		echo done
@@ -18,10 +18,6 @@ export UID=$UID
 set -e
 export GID=`id -g`
 docker-compose -f ../../samba.yml -f samba.override.yml -p backuptest up -d
-
-#DEBUG
-docker exec -it backup /bin/bash
-#cleanup 0
 
 echo waiting for docker containers to start ...
 sleep 3

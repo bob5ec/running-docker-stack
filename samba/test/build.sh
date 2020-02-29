@@ -1,4 +1,4 @@
 #!/bin/bash
 source ../../build-system.sh
 
-docker build -t bob5ec/samba-client:$env .
+docker build -t bob5ec/samba-client:$ENV .

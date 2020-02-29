@@ -44,7 +44,6 @@ docker logs config | grep failed
 if [ "$?" == "0" ]; then
 	cleanup 1
 fi
-
 #DEBUG
 #docker exec -it client /bin/sh
 
@@ -62,3 +61,4 @@ fi
 #echo $SHARES
 #[[ $SHARES =~ "data" && $SHARES =~ "foo" ]] || cleanup 1
 
+cleanup 0
