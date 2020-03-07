@@ -31,3 +31,7 @@ services:
     container_name: client
     #    image: "bob5ec/nextcloud-client:${ENV}"
     image: "bob5ec/nextcloud-client:nextcloud"
+    links:
+      - app
+    volumes:
+      - ./nextcloud/test/nextcloud-test/secrets:/secrets

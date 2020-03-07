@@ -1,0 +1,4 @@
+open https://app/nextcloud/remote.php/webdav/REMOTE-PATH
+lcd /YOUR-LOCAL-PATH
+mget *txt
+quit

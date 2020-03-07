@@ -34,6 +34,7 @@ occ maintenance:install --database="mysql" --database-name="nextcloud" --databas
 occ config:system:set trusted_domains 1 --value="coruscant"
 occ config:system:set trusted_domains 2 --value="niobe"
 occ config:system:set trusted_domains 3 --value="localhost"
+occ config:system:set trusted_domains 3 --value="app"
 
 #occ config:system:set overwrite.cli.url --value="https://nextcloud.my.domain"
 #TODO activate again

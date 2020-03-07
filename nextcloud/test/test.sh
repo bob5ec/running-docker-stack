@@ -60,7 +60,7 @@ if [ "$error_code" == "0" ]; then
 fi
 set -e
 #DEBUG
-#docker exec -it client /bin/sh
+docker exec -it client /bin/sh
 
 #TODO echo TEST: read and write files
 #TODO add nextcloud-client to compose, then call it
