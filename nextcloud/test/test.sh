@@ -43,13 +43,18 @@ while [ "$error_code" == "0" ]
 do
 	sleep 1
 	docker logs config --since 1s
+	set +e
 	docker ps | grep config
 	error_code=$?
+	set -e
 done
 
 echo TEST: config run without error
+set +e
 docker logs config | grep failed
-if [ "$?" == "0" ]; then
+error_code=$?
+set -e
+if [ "$error_code" == "0" ]; then
 	cleanup 1
 fi
 #DEBUG
