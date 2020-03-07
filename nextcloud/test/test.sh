@@ -1,7 +1,6 @@
 #!/bin/bash
 
 source ../../build-system.sh
-echo test nextcloud:$ENV
 
 # test local docker-deploy
 #cat ../../../docker-infrastructure/roles/docker/files/docker-deploy | /bin/bash -s -- -l ../../nextcloud.yml

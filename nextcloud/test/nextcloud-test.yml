@@ -29,4 +29,5 @@ services:
       - ./nextcloud/test/data/nextcloud:/var/www/html/data
   client:
     container_name: client
-    image: "bob5ec/nextcloud-client:${ENV}"
+    #    image: "bob5ec/nextcloud-client:${ENV}"
+    image: "bob5ec/nextcloud-client:nextcloud"
