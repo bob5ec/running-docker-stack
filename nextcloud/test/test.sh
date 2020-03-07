@@ -16,9 +16,11 @@ curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/d
 #TODO rerun tests
 
 function cleanup {
+	set +e
 	[[ "$1" == 1 ]] && echo error
 	#docker exec -it app chown -R $UID.$GID /data*
 	docker exec -it app rm -r /data*
+	set -e
 	# test local docker-deploy
 	#cat ../../../docker-infrastructure/roles/docker/files/docker-deploy | /bin/bash -s -- -l ../../nextcloud.yml | /bin/bash -s -- down -l ../../nextcloud.yml
 	curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- down -l ../../nextcloud.yml
@@ -51,12 +53,12 @@ done
 
 echo TEST: config run without error
 set +e
-docker logs config | grep failed
+docker logs config | grep failed > /dev/null
 error_code=$?
-set -e
 if [ "$error_code" == "0" ]; then
 	cleanup 1
 fi
+set -e
 #DEBUG
 #docker exec -it client /bin/sh
 
