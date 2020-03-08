@@ -1,29 +1,20 @@
-#!/bin/bash
+#!/bin/sh
 # exit when any command fails
 set -e
 
-exit_on_error() {
-    exit_code=$1
-    last_command=${@:2}
-    if [ $exit_code -ne 0 ]; then
-        >&2 echo "\"${last_command}\" command failed with exit code ${exit_code}."
-        exit $exit_code
-    fi
-}
-
-# keep track of the last executed command
-trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
-# echo an error message before exiting
-trap 'exit_on_error $? $last_command' EXIT
-
-source /secrets/compose
-
-echo 
 # create 0.netrc containing login data
 COUNT=`cat /secrets/users | jq '.users|length'`
-for ((i=0;i<COUNT;i++)); do
+#testing for valid and one invalid user (which is added by one off bug :-)
+for i in `seq 0 $COUNT`; do
   user=`cat /secrets/users | jq ".users[$i].name" -r`
   password=`cat /secrets/users | jq ".users[$i].password" -r`
   echo "machine app login $user password $password" > $i.netrc
 done
+for i in `seq 0 $COUNT`; do
+	echo testing user $i
+	cp $i.netrc .netrc
+	cadaver -r /cadaver.rc
+done
 
+#keep the container runing
+tail -f /dev/null

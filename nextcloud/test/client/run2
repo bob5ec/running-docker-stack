@@ -1,0 +1,12 @@
+#!/bin/bash
+
+username="bar"
+password="PsycTested"
+  #-v some_named_volume:/media/nextcloud \
+
+docker run -it --rm \
+  -v /tmp/0:/media/nextcloud \
+  -e NC_USER=$username -e NC_PASS=$password \
+  -e NC_URL="http://app:80/nextcloud"\
+  -e NC_EXIT=true\
+  juanitomint/nextcloud-client
