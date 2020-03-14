@@ -29,13 +29,14 @@ services:
       - ./nextcloud/test/data/nextcloud:/var/www/html/data
   client:
     container_name: client
-    #    image: "bob5ec/nextcloud-client:${ENV}"
-    image: "juanitomint/nextcloud-client"
-    environment:
-      - NC_USER=bar
-      - NC_PASS=PsycTested
-      - NC_URL=http://app/
-      - NC_EXIT=false
+    #image: "bob5ec/nextcloud-client:${ENV}"
+    image: "bob5ec/nextcloud-client:nextcloud"
+    #image: "juanitomint/nextcloud-client"
+    #environment:
+    #  - NC_USER=bar
+    #  - NC_PASS=PsycTested
+    #  - NC_URL=http://app/remote.php/dav/files/bar/
+    #  - NC_EXIT=false
     links:
       - app
     volumes:

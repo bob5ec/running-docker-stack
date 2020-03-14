@@ -7,6 +7,6 @@ password="PsycTested"
 docker run -it --rm \
   -v /tmp/0:/media/nextcloud \
   -e NC_USER=$username -e NC_PASS=$password \
-  -e NC_URL="http://app:80/nextcloud"\
+  -e NC_URL="http://localhost:8080/remote.php/dav/files/bar/"\
   -e NC_EXIT=true\
   juanitomint/nextcloud-client
