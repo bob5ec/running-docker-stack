@@ -2,6 +2,7 @@ version: '3'
 
 volumes:
   nextcloud:
+    external: true
   nextcloudDb:
     external: true
 

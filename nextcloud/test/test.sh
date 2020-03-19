@@ -7,15 +7,25 @@ if [ "$ENV" == "prod" ]; then
 	exit 1
 fi
 
-#db_volume=`docker volume ls | grep Db | cut -c 21-`
-#if [ ! -z "$db_volume" ]; then
-#	docker volume rm $db_volume
-#fi
+while IFS= read -r volume
+do
+	echo -n "removing volume "
+	set +e
+	docker volume rm "$volume"
+	set -e
+	echo -n "creating volume "
+	docker volume create "$volume"
+done < nextcloud-test/volumes
+
+
+db_volume=`docker volume ls | grep Db | cut -c 21-`
+if [ ! -z "$db_volume" ]; then
+	docker volume rm $db_volume
+fi
 
 # test local docker-deploy
-cat ../../../docker-infrastructure/roles/docker/files/docker-deploy | /bin/bash -s -- -l ../../nextcloud.yml
-#get docker-deploy via git prod branch
-#curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- -l ../../nextcloud.yml
+#../../../docker-infrastructure/roles/docker/files/docker-deploy -l ../../nextcloud.yml
+curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- -l ../../nextcloud.yml
 
 
 function cleanup {
@@ -25,12 +35,16 @@ function cleanup {
 	docker exec -it app rm -r /data*
 	set -e
 	# test local docker-deploy
-	cat ../../../docker-infrastructure/roles/docker/files/docker-deploy | /bin/bash -s -- -l ../../nextcloud.yml | /bin/bash -s -- down -l ../../nextcloud.yml
-	#curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- down -l ../../nextcloud.yml
+	#../../../docker-infrastructure/roles/docker/files/docker-deploy down -l ../../nextcloud.yml
+	curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- down -l ../../nextcloud.yml
 
-#	if [ ! -z "$db_volume" ]; then
-#		docker volume rm $db_volume
-#	fi
+	while IFS= read -r volume
+	do
+		echo -n "removing volume "
+		set +e
+		docker volume rm "$volume"
+		set -e
+	done < nextcloud-test/volumes
 	exit $1
 }
 set +e
