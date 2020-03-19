@@ -1,5 +1,4 @@
-open http://app/remote.php/dav/files/bar/
 ls
-#put /data/testfile
-#get testfile
+put /test.md /data/test.md
+get /data/test.md /download.md
 quit

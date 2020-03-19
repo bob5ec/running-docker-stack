@@ -2,18 +2,21 @@
 
 source ../../build-system.sh
 
-# test local docker-deploy
-#cat ../../../docker-infrastructure/roles/docker/files/docker-deploy | /bin/bash -s -- -l ../../nextcloud.yml
-#get docker-deploy via git prod branch
-curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- -l ../../nextcloud.yml
+if [ "$ENV" == "prod" ]; then
+	echo test would delete the prod database
+	exit 1
+fi
 
-#TODO feed docker-deploy with an overwrite.yml
-#TODO place test secrets in the right directory
-#TODO use docker-deploy to deploy nextcloud
-#TODO create emtpy test database (or overwrite the external flag in compose file)
-#TODO run is alive test
-#TODO rerun docker-deploy
-#TODO rerun tests
+#db_volume=`docker volume ls | grep Db | cut -c 21-`
+#if [ ! -z "$db_volume" ]; then
+#	docker volume rm $db_volume
+#fi
+
+# test local docker-deploy
+cat ../../../docker-infrastructure/roles/docker/files/docker-deploy | /bin/bash -s -- -l ../../nextcloud.yml
+#get docker-deploy via git prod branch
+#curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- -l ../../nextcloud.yml
+
 
 function cleanup {
 	set +e
@@ -22,8 +25,12 @@ function cleanup {
 	docker exec -it app rm -r /data*
 	set -e
 	# test local docker-deploy
-	#cat ../../../docker-infrastructure/roles/docker/files/docker-deploy | /bin/bash -s -- -l ../../nextcloud.yml | /bin/bash -s -- down -l ../../nextcloud.yml
-	curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- down -l ../../nextcloud.yml
+	cat ../../../docker-infrastructure/roles/docker/files/docker-deploy | /bin/bash -s -- -l ../../nextcloud.yml | /bin/bash -s -- down -l ../../nextcloud.yml
+	#curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- down -l ../../nextcloud.yml
+
+#	if [ ! -z "$db_volume" ]; then
+#		docker volume rm $db_volume
+#	fi
 	exit $1
 }
 set +e
@@ -59,21 +66,21 @@ if [ "$error_code" == "0" ]; then
 	cleanup 1
 fi
 set -e
-#DEBUG
-docker exec -it client /bin/sh
 
-#TODO echo TEST: read and write files
-#TODO add nextcloud-client to compose, then call it
+echo TEST webdav upload and download
+docker exec -it client /test || cleanup 1
+
+#TODO echo redeploy via docker-deploy
+#curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- -l ../../nextcloud.yml
+
+#TODO echo TEST webdav upload and download
+#docker exec -it client /test || cleanup 1
+
+#DEBUG
+#docker exec -it client /bin/sh
+
+
 # TODO test for unauthenticated access
 
-#cleanup 0
-####################################
-
-#docker exec -it samba-client /bin/sh || cleanup 1
-
-#echo TEST: data and user share
-#SHARES=`docker exec -it samba-client /bin/sh -c "echo test | smbclient -U foo -L samba -e"`
-#echo $SHARES
-#[[ $SHARES =~ "data" && $SHARES =~ "foo" ]] || cleanup 1
 
 cleanup 0

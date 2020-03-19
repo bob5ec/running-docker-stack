@@ -2,19 +2,26 @@
 # exit when any command fails
 set -e
 
+echo test > /test.md
+
 # create 0.netrc containing login data
 COUNT=`cat /secrets/users | jq '.users|length'`
+COUNT=`expr $COUNT - 1`
 #testing for valid and one invalid user (which is added by one off bug :-)
 for i in `seq 0 $COUNT`; do
   user=`cat /secrets/users | jq ".users[$i].name" -r`
   password=`cat /secrets/users | jq ".users[$i].password" -r`
-  echo "machine app login $user password $password" > $i.netrc
+  echo "machine app login $user password $password" > /$i.netrc
+  echo "open http://app/remote.php/dav/files/$user/" > /$i.cadaver.rc
+  cat /cadaver.rc >> /$i.cadaver.rc
 done
 for i in `seq 0 $COUNT`; do
 	echo testing user $i
-	cp $i.netrc .netrc
-	cadaver -r /cadaver.rc
+	cp $i.netrc ~/.netrc
+	cadaver -r /$i.cadaver.rc
+	if [ ! `cat /download.md` = "test" ]; then
+		exit 1
+	fi
+	rm /download.md
 done
 
-#keep the container runing
-tail -f /dev/null
