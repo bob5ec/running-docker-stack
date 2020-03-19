@@ -24,8 +24,8 @@ if [ ! -z "$db_volume" ]; then
 fi
 
 # test local docker-deploy
-../../../docker-infrastructure/roles/docker/files/docker-deploy -l ../../nextcloud.yml
-#curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- -l ../../nextcloud.yml
+#../../../docker-infrastructure/roles/docker/files/docker-deploy -l ../../nextcloud.yml
+curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- -l ../../nextcloud.yml
 
 
 function cleanup {
@@ -35,8 +35,8 @@ function cleanup {
 	docker exec -it app rm -r /data*
 	set -e
 	# test local docker-deploy
-	../../../docker-infrastructure/roles/docker/files/docker-deploy down -l ../../nextcloud.yml
-	#curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- down -l ../../nextcloud.yml
+	#../../../docker-infrastructure/roles/docker/files/docker-deploy down -l ../../nextcloud.yml
+	curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- down -l ../../nextcloud.yml
 
 	while IFS= read -r volume
 	do
