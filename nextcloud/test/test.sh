@@ -24,8 +24,8 @@ if [ ! -z "$db_volume" ]; then
 fi
 
 # test local docker-deploy
-#../../../docker-infrastructure/roles/docker/files/docker-deploy -l ../../nextcloud.yml
-curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- -l ../../nextcloud.yml
+../../../docker-infrastructure/roles/docker/files/docker-deploy -l ../../nextcloud.yml
+#curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- -l ../../nextcloud.yml
 
 
 function cleanup {
@@ -35,8 +35,8 @@ function cleanup {
 	docker exec -it app rm -r /data*
 	set -e
 	# test local docker-deploy
-	#../../../docker-infrastructure/roles/docker/files/docker-deploy down -l ../../nextcloud.yml
-	curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- down -l ../../nextcloud.yml
+	../../../docker-infrastructure/roles/docker/files/docker-deploy down -l ../../nextcloud.yml
+	#curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- down -l ../../nextcloud.yml
 
 	while IFS= read -r volume
 	do
@@ -84,11 +84,41 @@ set -e
 echo TEST webdav upload and download
 docker exec -it client /test || cleanup 1
 
-#TODO echo redeploy via docker-deploy
-#curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- -l ../../nextcloud.yml
+echo re-deploy via docker-deploy
+curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- -l ../../nextcloud.yml
 
-#TODO echo TEST webdav upload and download
-#docker exec -it client /test || cleanup 1
+echo waiting for app to start ...
+curl https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh | /bin/bash -s -- localhost:8080 -t 0
+
+echo waiting for db to start ...
+docker exec -it app /bin/bash -c "curl https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh | /bin/bash -s -- db:3306 -t 0"
+
+echo wait for config run to compleate. Here is the container\'s log:
+docker logs config
+docker ps | grep config
+error_code=$?
+while [ "$error_code" == "0" ]
+do
+	sleep 1
+	docker logs config --since 1s
+	set +e
+	docker ps | grep config
+	error_code=$?
+	set -e
+done
+
+echo TEST: config run did not fail
+set +e
+#TODO also fail if message "command failed with exit code" is thrown on non zero exit code
+docker logs config | grep failed > /dev/null
+error_code=$?
+if [ "$error_code" == "0" ]; then
+	cleanup 1
+fi
+set -e
+
+echo "TEST webdav download after redeploy (data is still avalable)"
+docker exec -it client /test-redeploy || cleanup 1
 
 #DEBUG
 #docker exec -it client /bin/sh

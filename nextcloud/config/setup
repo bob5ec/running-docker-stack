@@ -28,8 +28,15 @@ wait-for-it -t 0 db:3306
 
 source /secrets/compose
 
-echo install nextcloud
-occ maintenance:install --database="mysql" --database-name="nextcloud" --database-host="db" --database-user="nextcloud" --database-pass="${MYSQL_PASSWORD}" --database-table-prefix="" --admin-user="admin" --admin-pass="${NEXTCLOUD_ADMIN_PASSWORD}"
+installed=`occ status | grep installed`
+
+if [[ $installed =~ "true" ]]; then
+	echo upgrading nextcloud
+	occ upgrade -v
+else
+	echo install nextcloud
+	occ maintenance:install --database="mysql" --database-name="nextcloud" --database-host="db" --database-user="nextcloud" --database-pass="${MYSQL_PASSWORD}" --database-table-prefix="" --admin-user="admin" --admin-pass="${NEXTCLOUD_ADMIN_PASSWORD}"
+fi
 
 occ config:system:set trusted_domains 1 --value="coruscant"
 occ config:system:set trusted_domains 2 --value="niobe"

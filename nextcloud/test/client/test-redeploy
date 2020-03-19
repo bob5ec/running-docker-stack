@@ -13,7 +13,7 @@ for i in `seq 0 $COUNT`; do
   password=`cat /secrets/users | jq ".users[$i].password" -r`
   echo "machine app login $user password $password" > /$i.netrc
   echo "open http://app/remote.php/dav/files/$user/" > /$i.cadaver.rc
-  cat /cadaver.rc >> /$i.cadaver.rc
+  cat /cadaver-redeploy.rc >> /$i.cadaver.rc
 done
 for i in `seq 0 $COUNT`; do
 	echo testing user $i
