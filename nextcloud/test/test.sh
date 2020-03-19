@@ -2,7 +2,7 @@
 
 source ../../build-system.sh
 
-if [ "$ENV" == "prod" ]; then
+if [ "$ENV" == "prod" ] && [ -z "$TRAVIS_BRANCH" ]; then
 	echo test would delete the prod database
 	exit 1
 fi
