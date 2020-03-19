@@ -39,7 +39,7 @@ BASE_DIR=/home/test/backup
 docker exec test-sshd /bin/bash -c "mkdir -p $BASE_DIR; chown test $BASE_DIR"
 
 echo TEST: run backup
-docker exec backup /etc/cron.daily/backup.sh || cleanup 1
+docker exec backup /etc/cron.daily/backup || cleanup 1
 
 #echo TEST: backup exists on storage
 BASE_DIR=/home/test/backup
