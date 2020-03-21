@@ -2,6 +2,7 @@ version: "3.3"
 
 services:
   backup:
+    image: "bob5ec/backup:new"
     container_name: backup
     volumes: 
      - ./backup/test/root:/mnt/root

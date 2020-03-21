@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+
+  db:
+    container_name: db
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+  app:
+    container_name: app
+    volumes:
+      - nextcloud:/var/www/html
+      - ./nextcloud/test/data:/data
+      - ./nextcloud/test/data/nextcloud:/var/www/html/data
+  config:
+    container_name: config
+    volumes:
+      - ./nextcloud/config:/config
+      - ./nextcloud/test/nextcloud-test/secrets:/secrets
+      - nextcloud:/var/www/html
+      - ./nextcloud/test/data:/data
+      - ./nextcloud/test/data/nextcloud:/var/www/html/data
+  client:
+    container_name: client
+    image: "bob5ec/nextcloud-client:new"
+    links:
+      - app
+    volumes:
+      - ./nextcloud/test/nextcloud-test/secrets:/secrets
+      - ./nextcloud/test/data-client:/media/nextcloud
