@@ -1,0 +1,4 @@
+ls
+put /test.md /data/test.md
+get /data/test.md /download.md
+quit

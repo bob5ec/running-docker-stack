@@ -2,6 +2,7 @@ version: "3.3"
 
 services:
   samba:
+    image: "bob5ec/samba:new"
     container_name: samba
     volumes: 
      - ./samba/test/secrets:/secrets
@@ -10,6 +11,6 @@ services:
      - ./samba/test/data/home:/home
   samba-client:
     container_name: samba-client
-    image: "bob5ec/samba-client:${ENV}"
+    image: "bob5ec/samba-client:new"
     links:
      - samba

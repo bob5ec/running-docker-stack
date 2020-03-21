@@ -1,4 +1,7 @@
 #!/bin/bash
+
+source ../../build-system.sh
+
 function cleanup {
 	[[ "$1" == 1 ]] && echo error
 	docker exec -it samba chown -R $UID.$GID /data*
@@ -6,13 +9,13 @@ function cleanup {
 	exit $1
 }
 
-#set default env to dev
-export ENV=${ENV:-dev}
-
+#set default ENV to dev
+#export ENV=${ENV:-dev}
+set +e
 export UID=$UID
+set -e
 export GID=`id -g`
 #use original compose and add client
-echo "env:$ENV"
 docker-compose -f ../../samba.yml -f samba.override.yml -p samba-test up -d
 
 echo waiting for docker containers to start ...
