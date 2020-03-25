@@ -6,5 +6,5 @@ cd $BUILD_ROOT/samba
 . push.sh
 cd $BUILD_ROOT/backup
 . push.sh
-cd $BUILD_ROOT/nextcloud/test
+cd $BUILD_ROOT/nextcloud
 . push.sh

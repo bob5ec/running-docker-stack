@@ -28,7 +28,7 @@ services:
 #              docker volume create nextcloudDb"
     
   app:
-    image: nextcloud
+    image: "bob5ec/nextcloud:${ENV}"
     ports:
       - 8080:80
     links:
@@ -43,7 +43,7 @@ services:
       - config
   config:
     build: .
-    image: nextcloud
+    image: "bob5ec/nextcloud:${ENV}"
     volumes:
       - ./nextcloud/config:/config
       - ./nextcloud/secrets:/secrets

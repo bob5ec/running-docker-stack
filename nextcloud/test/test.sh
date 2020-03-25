@@ -81,6 +81,10 @@ if [ "$error_code" == "0" ]; then
 fi
 set -e
 
+#TODO test external storage is working
+#DEBUG
+#docker exec -it client /bin/sh
+
 echo TEST webdav upload and download
 docker exec -it client /test || cleanup 1
 
@@ -120,8 +124,6 @@ set -e
 echo "TEST webdav download after redeploy (data is still avalable)"
 docker exec -it client /test-redeploy || cleanup 1
 
-#DEBUG
-#docker exec -it client /bin/sh
 
 
 # TODO test for unauthenticated access
