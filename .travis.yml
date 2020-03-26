@@ -3,6 +3,7 @@ services:
 
 script:
   - ./build.sh
+  - ./resolve.sh
   - ./test.sh
 
 deploy:

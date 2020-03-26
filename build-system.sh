@@ -16,6 +16,20 @@ trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
 # echo an error message before exiting
 trap 'exit_on_error $? $last_command' EXIT
 
+# $1 base compose file (not in current directory)
+pull() {
+	#docker-compose pull
+	for compose in *.yml; do
+		compose_base=`basename $compose .yml`
+	        base=""
+        	if [ -n "$1" ]; then
+                	base="-f $1"
+	        fi
+
+		docker-compose $base -f $compose -p $compose_base pull --ignore-pull-failures
+	done
+}
+
 ###############################################################################
 if [ ! -z "$TRAVIS_BRANCH" ]; then
 	export ENV=$TRAVIS_BRANCH
