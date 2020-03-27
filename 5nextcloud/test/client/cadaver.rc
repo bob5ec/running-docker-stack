@@ -1,4 +1,4 @@
 ls
-put /test.md /data/test.md
-get /data/test.md /download.md
+put /test.md /home/test.md
+get /home/test.md /download.md
 quit

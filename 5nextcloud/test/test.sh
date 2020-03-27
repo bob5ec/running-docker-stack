@@ -82,7 +82,7 @@ set -e
 
 #TODO test external storage is working
 #DEBUG
-#docker exec -it client /bin/sh
+docker exec -it client /bin/sh
 
 echo TEST webdav upload and download
 docker exec -it client /test || cleanup 1
