@@ -15,7 +15,7 @@ do
 	set -e
 	echo -n "creating volume "
 	docker volume create "$volume"
-done < nextcloud-test/volumes
+done < 5nextcloud/volumes
 
 
 db_volume=`docker volume ls | grep Db | cut -c 21-`
@@ -23,10 +23,11 @@ if [ ! -z "$db_volume" ]; then
 	docker volume rm $db_volume
 fi
 
+DOCKER_DEPLOY="curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s --"
 # test local docker-deploy
-#../../../docker-infrastructure/roles/docker/files/docker-deploy -l ../../nextcloud.yml
-curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- -l ../../nextcloud.yml
+DOCKER_DEPLOY="../../../docker-infrastructure/roles/docker/files/docker-deploy"
 
+$DOCKER_DEPLOY -l ../..
 
 function cleanup {
 	set +e
@@ -34,9 +35,7 @@ function cleanup {
 	#docker exec -it app chown -R $UID.$GID /data*
 	docker exec -it app rm -r /data*
 	set -e
-	# test local docker-deploy
-	#../../../docker-infrastructure/roles/docker/files/docker-deploy down -l ../../nextcloud.yml
-	curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- down -l ../../nextcloud.yml
+	$DOCKER_DEPLOY down -l ../..
 
 	while IFS= read -r volume
 	do
@@ -44,7 +43,7 @@ function cleanup {
 		set +e
 		docker volume rm "$volume"
 		set -e
-	done < nextcloud-test/volumes
+	done < 5nextcloud/volumes
 	exit $1
 }
 set +e
@@ -89,7 +88,7 @@ echo TEST webdav upload and download
 docker exec -it client /test || cleanup 1
 
 echo re-deploy via docker-deploy
-curl https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy | /bin/bash -s -- -l ../../nextcloud.yml
+$DOCKER_DEPLOY -l ../..
 
 echo waiting for app to start ...
 curl https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh | /bin/bash -s -- localhost:8080 -t 0

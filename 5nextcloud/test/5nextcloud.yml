@@ -13,21 +13,20 @@ services:
     container_name: app
     volumes:
       - nextcloud:/var/www/html
-      - ./nextcloud/test/data:/data
-      - ./nextcloud/test/data/nextcloud:/var/www/html/data
+      - ./5nextcloud/test/data:/data
+      - ./5nextcloud/test/data/nextcloud:/var/www/html/data
   config:
     container_name: config
     volumes:
-      - ./nextcloud/config:/config
-      - ./nextcloud/test/nextcloud-test/secrets:/secrets
+      - ./5nextcloud/config:/config
+      - ./5nextcloud/test/5nextcloud/secrets:/secrets
       - nextcloud:/var/www/html
-      - ./nextcloud/test/data:/data
-      - ./nextcloud/test/data/nextcloud:/var/www/html/data
+      - ./5nextcloud/test/data:/data
+      - ./5nextcloud/test/data/nextcloud:/var/www/html/data
   client:
     container_name: client
     image: "bob5ec/nextcloud-client:new"
     links:
       - app
     volumes:
-      - ./nextcloud/test/nextcloud-test/secrets:/secrets
-      - ./nextcloud/test/data-client:/media/nextcloud
+      - ./5nextcloud/test/5nextcloud/secrets:/secrets
