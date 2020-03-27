@@ -9,7 +9,7 @@ function cleanup {
 		echo done
 	fi
 	docker exec -it backup chown -R $UID.$GID /data*
-	docker-compose -f ../../samba.yml -f samba.override.yml -p backuptest down
+	docker-compose -f ../../4samba.yml -f 4samba.yml -p backuptest down
 	exit $1
 }
 
@@ -17,7 +17,7 @@ set +e
 export UID=$UID
 set -e
 export GID=`id -g`
-docker-compose -f ../../samba.yml -f samba.override.yml -p backuptest up -d
+docker-compose -f ../../4samba.yml -f 4samba.yml -p backuptest up -d
 
 echo waiting for docker containers to start ...
 sleep 3

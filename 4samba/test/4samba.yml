@@ -5,10 +5,10 @@ services:
     image: "bob5ec/samba:new"
     container_name: samba
     volumes: 
-     - ./samba/test/secrets:/secrets
-     - ./samba/test/data:/data
-     - ./samba/test/data2:/data2
-     - ./samba/test/data/home:/home
+     - ./4samba/test/secrets:/secrets
+     - ./4samba/test/data:/data
+     - ./4samba/test/data2:/data2
+     - ./4samba/test/data/home:/home
   samba-client:
     container_name: samba-client
     image: "bob5ec/samba-client:new"

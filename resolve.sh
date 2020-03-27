@@ -5,14 +5,14 @@ ENV_NEW=$ENV
 ENV="new"
 BUILD_ROOT=`pwd`
 
-cd $BUILD_ROOT/samba/test
-pull $BUILD_ROOT/samba.yml
+cd $BUILD_ROOT/4samba/test
+pull $BUILD_ROOT
 
 cd $BUILD_ROOT/backup/test
-pull $BUILD_ROOT/samba.yml
+pull $BUILD_ROOT
 
-cd $BUILD_ROOT/nextcloud/test
-pull $BUILD_ROOT/nextcloud.yml
+cd $BUILD_ROOT/5nextcloud/test
+pull $BUILD_ROOT
 
 ENV=$ENV_NEW
 docker image tag bob5ec/samba:new bob5ec/samba:$ENV
