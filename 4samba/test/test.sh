@@ -30,7 +30,7 @@ docker exec -it samba-client /bin/true || cleanup 1
 #docker exec -it samba-client /bin/sh || cleanup 1
 
 echo TEST: data and user share
-SHARES=`docker exec -it samba-client /bin/sh -c "echo test | smbclient -U foo -L samba -e"`
+SHARES=`docker exec -it samba-client /bin/sh -c "echo testedPsyc | smbclient -U foo -L samba -e"`
 echo $SHARES
 [[ $SHARES =~ "data" && $SHARES =~ "foo" ]] || cleanup 1
 
