@@ -52,7 +52,6 @@ services:
       - db
       - config
   config:
-    build: .
     image: "bob5ec/nextcloud:${ENV}"
     volumes:
       - ./5nextcloud/config:/config
