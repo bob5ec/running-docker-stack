@@ -27,6 +27,8 @@ fi
 curl -o /tmp/docker-deploy https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy
 chmod +x /tmp/docker-deploy
 DOCKER_DEPLOY="/tmp/docker-deploy"
+cat $DOCKER_DEPLOY
+ls -l $DOCKER_DEPLOY 
 # test local docker-deploy
 #DOCKER_DEPLOY="../../../docker-infrastructure/roles/docker/files/docker-deploy"
 
