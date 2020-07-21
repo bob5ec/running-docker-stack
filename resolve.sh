@@ -14,7 +14,7 @@ pull $BUILD_ROOT
 cd $BUILD_ROOT/5nextcloud/test
 pull $BUILD_ROOT
 
-ENV=$ENV_NEW
+export ENV=$ENV_NEW
 docker image tag bob5ec/samba:new bob5ec/samba:$ENV
 docker image tag bob5ec/samba-client:new bob5ec/samba-client:$ENV
 docker image tag bob5ec/backup:new bob5ec/backup:$ENV
