@@ -2,6 +2,8 @@
 
 source ../../build-system.sh
 
+echo test source nextcloud:$ENV
+
 if [ "$ENV" == "prod" ] && [ -z "$TRAVIS_BRANCH" ]; then
 	echo test would delete the prod database
 	exit 1
@@ -24,9 +26,9 @@ if [ ! -z "$db_volume" ]; then
 fi
 
 
-curl -o /tmp/docker-deploy https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy
-chmod +x /tmp/docker-deploy
 DOCKER_DEPLOY="/tmp/docker-deploy"
+curl -o $DOCKER_DEPLOY https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy
+chmod +x $DOCKER_DEPLOY
 # test local docker-deploy
 #DOCKER_DEPLOY="../../../docker-infrastructure/roles/docker/files/docker-deploy"
 
