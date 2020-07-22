@@ -30,7 +30,7 @@ DOCKER_DEPLOY="/tmp/docker-deploy"
 curl -o $DOCKER_DEPLOY https://raw.githubusercontent.com/bob5ec/docker-infrastructure/prod/roles/docker/files/docker-deploy
 chmod +x $DOCKER_DEPLOY
 # test local docker-deploy
-DOCKER_DEPLOY="../../../docker-infrastructure/roles/docker/files/docker-deploy"
+#DOCKER_DEPLOY="../../../docker-infrastructure/roles/docker/files/docker-deploy"
 
 $DOCKER_DEPLOY -l ../..
 
