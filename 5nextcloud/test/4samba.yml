@@ -1,0 +1,13 @@
+version: "3.3"
+
+services:
+  samba:
+    image: "bob5ec/samba:prod"
+    ports:
+     - "445:445"
+    container_name: samba
+    volumes: 
+     - ./4samba/test/secrets:/secrets
+     - ./4samba/test/data:/data
+     - ./4samba/test/data2:/data2
+     - ./4samba/test/data/home:/home

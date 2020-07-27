@@ -1,5 +1,10 @@
 version: '3'
 
+networks:
+  samba:
+    external:
+      name: 4samba_default
+
 volumes:
   nextcloud:
     external: true
@@ -28,7 +33,7 @@ services:
 #              docker volume create nextcloudDb"
     
   app:
-    image: nextcloud
+    image: "bob5ec/nextcloud:${ENV}"
     ports:
       - 8080:80
     links:
@@ -37,16 +42,20 @@ services:
       - nextcloud:/var/www/html
       - /data:/data
       - /data/nextcloud:/var/www/html/data
+    networks:
+      - default
+      - samba
+    external_links:
+      - samba
     restart: always
     depends_on:
       - db
       - config
   config:
-    build: .
-    image: nextcloud
+    image: "bob5ec/nextcloud:${ENV}"
     volumes:
-      - ./nextcloud/config:/config
-      - ./nextcloud/secrets:/secrets
+      - ./5nextcloud/config:/config
+      - ./5nextcloud/secrets:/secrets
       - nextcloud:/var/www/html
       - /data:/data
       - /data/nextcloud:/var/www/html/data

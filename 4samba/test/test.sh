@@ -5,7 +5,7 @@ source ../../build-system.sh
 function cleanup {
 	[[ "$1" == 1 ]] && echo error
 	docker exec -it samba chown -R $UID.$GID /data*
-	docker-compose -f ../../samba.yml -f samba.override.yml -p samba-test down
+	docker-compose -f ../../4samba.yml -f 4samba.yml -p samba-test down
 	exit $1
 }
 
@@ -16,7 +16,7 @@ export UID=$UID
 set -e
 export GID=`id -g`
 #use original compose and add client
-docker-compose -f ../../samba.yml -f samba.override.yml -p samba-test up -d
+docker-compose -f ../../4samba.yml -f 4samba.yml -p samba-test up -d
 
 echo waiting for docker containers to start ...
 sleep 3
@@ -30,7 +30,7 @@ docker exec -it samba-client /bin/true || cleanup 1
 #docker exec -it samba-client /bin/sh || cleanup 1
 
 echo TEST: data and user share
-SHARES=`docker exec -it samba-client /bin/sh -c "echo test | smbclient -U foo -L samba -e"`
+SHARES=`docker exec -it samba-client /bin/sh -c "echo testedPsyc | smbclient -U foo -L samba -e"`
 echo $SHARES
 [[ $SHARES =~ "data" && $SHARES =~ "foo" ]] || cleanup 1
 

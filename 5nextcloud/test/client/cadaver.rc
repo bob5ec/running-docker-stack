@@ -1,0 +1,4 @@
+ls
+put /test.md /home/test.md
+get /home/test.md /download.md
+quit

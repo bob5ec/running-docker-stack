@@ -91,7 +91,17 @@ do
 done
 
 # --output "json" means just get me the id...
-id=`occ files_external:create /data local null::null --output json`
-echo "created $id"
-occ files_external:config $id "datadir" "/data"
-occ files_external:applicable --add-group users $id
+#id=`occ files_external:create /data local null::null --output json`
+#echo "created $id"
+#occ files_external:config $id "datadir" "/data"
+#occ files_external:applicable --add-group users $id
+
+
+#create smb shares defined in json file
+COUNT=`cat /secrets/smb-shares | jq '.shares|length'`
+for ((i=0;i<COUNT;i++)); do
+  host=`cat /secrets/smb-shares | jq ".shares[$i].host" -r`
+  share=`cat /secrets/smb-shares | jq ".shares[$i].share" -r`
+  domain=`cat /secrets/smb-shares | jq ".shares[$i].domain" -r`
+  occ files_external:create /$share smb password::logincredentials -c host=$host -c share=$share -c domain=$domain
+done
