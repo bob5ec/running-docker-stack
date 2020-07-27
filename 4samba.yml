@@ -6,7 +6,7 @@ services:
     ports:
      - "445:445"
     volumes: 
-     - /root/.running_docker_stack/samba/secrets:/secrets
+     - /root/.running_docker_stack/4samba/secrets:/secrets
      - /data:/data
      - /data2:/data2
      - /data/home:/home
