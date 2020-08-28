@@ -18,11 +18,17 @@ jobs:
       uses: actions/checkout@v2
     - name: Build the Docker image
       run: ./build.sh
-    - name: Run the local Anchore scan action itself with GitHub Advanced Security code scanning integration enabled
+    - name: Run Anchore scan for samba
       uses: anchore/scan-action@master
       with:
         image-reference: "bob5ec/samba:new"
         dockerfile-path: "4samba/Dockerfile"
+        acs-report-enable: true
+    - name: Run Anchore scan for nextcloud
+      uses: anchore/scan-action@master
+      with:
+        image-reference: "bob5ec/nextcloud:new"
+        dockerfile-path: "5nextcloud/Dockerfile"
         acs-report-enable: true
     - name: Upload Anchore Scan Report
       uses: github/codeql-action/upload-sarif@v1
